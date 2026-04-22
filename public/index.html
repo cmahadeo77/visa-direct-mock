@@ -16,18 +16,13 @@
     --muted:     #64748b;
     --accent:    #1a56db;
 
-    --green:     #10b981;
-    --green-bg:  #052e16;
-    --red:       #ef4444;
-    --red-bg:    #2d0c0c;
-    --amber:     #f59e0b;
-    --amber-bg:  #2d1f05;
-    --purple:    #a78bfa;
-    --purple-bg: #1e1030;
-    --blue:      #38bdf8;
-    --blue-bg:   #0a1e30;
-    --gray:      #94a3b8;
-    --gray-bg:   #1a2233;
+    --green:     #10b981;  --green-bg:  #052e16;
+    --red:       #ef4444;  --red-bg:    #2d0c0c;
+    --amber:     #f59e0b;  --amber-bg:  #2d1f05;
+    --purple:    #a78bfa;  --purple-bg: #1e1030;
+    --blue:      #38bdf8;  --blue-bg:   #0a1e30;
+    --orange:    #fb923c;  --orange-bg: #2d1505;
+    --gray:      #94a3b8;  --gray-bg:   #1a2233;
   }
 
   body {
@@ -35,744 +30,898 @@
     color: var(--text);
     font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
     font-size: 13px;
-    min-height: 100vh;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* ── HEADER ────────────────────────────────────────────────────────────── */
+  /* ── HEADER ─────────────────────────────────────────────────────────── */
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 14px 24px;
+    padding: 12px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-shrink: 0;
   }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
+  .logo { display: flex; align-items: center; gap: 12px; }
   .logo-badge {
-    background: #1a56db;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    padding: 4px 10px;
-    border-radius: 3px;
-    text-transform: uppercase;
+    background: #1a56db; color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    padding: 4px 10px; border-radius: 3px; text-transform: uppercase;
   }
-  .logo-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.5px;
-  }
-  .logo-sub {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 1px;
-  }
-  .header-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  .btn-reset {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 6px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 12px;
-    transition: all .15s;
-  }
-  .btn-reset:hover { border-color: var(--red); color: var(--red); }
-  .server-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    color: var(--green);
-  }
+  .logo-title { font-size: 15px; font-weight: 700; }
+  .logo-sub   { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .server-status { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--green); }
   .status-dot {
-    width: 7px; height: 7px;
-    background: var(--green);
-    border-radius: 50%;
+    width: 7px; height: 7px; background: var(--green); border-radius: 50%;
     animation: pulse 2s infinite;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50%       { opacity: 0.4; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .btn-sm {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 5px 12px; border-radius: 4px;
+    cursor: pointer; font-family: inherit; font-size: 11px; transition: all .15s;
   }
+  .btn-sm:hover { border-color: var(--red); color: var(--red); }
 
-  /* ── LAYOUT ────────────────────────────────────────────────────────────── */
-  .layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 0;
-    height: calc(100vh - 57px);
-  }
-
-  /* ── SCENARIO PANEL (full width top) ──────────────────────────────────── */
-  .scenario-panel {
-    grid-column: 1 / -1;
+  /* ── TX TYPE TABS ────────────────────────────────────────────────────── */
+  .tx-tabs {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 16px 24px;
-  }
-  .scenario-label {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-  }
-  .scenario-grid {
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    padding: 0 24px;
+    gap: 0;
+    flex-shrink: 0;
   }
+  .tx-tab {
+    background: transparent; border: none;
+    color: var(--muted); font-family: inherit; font-size: 12px;
+    padding: 10px 20px; cursor: pointer; letter-spacing: .5px;
+    border-bottom: 2px solid transparent; transition: all .15s;
+  }
+  .tx-tab:hover { color: var(--text); }
+  .tx-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+  .tx-tab .tab-pill {
+    font-size: 9px; padding: 2px 6px; border-radius: 3px;
+    margin-left: 6px; font-weight: 700; vertical-align: middle;
+  }
+  .oct-pill  { background: var(--blue-bg);  color: var(--blue);  }
+  .aft-pill  { background: var(--amber-bg); color: var(--amber); }
+  .pair-pill { background: var(--purple-bg);color: var(--purple);}
+
+  /* ── SCENARIO PANEL ──────────────────────────────────────────────────── */
+  .scenario-panel {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    flex-shrink: 0;
+  }
+  .scenario-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .scenario-grid  { display: flex; gap: 8px; flex-wrap: nowrap; overflow-x: auto; }
   .scenario-card {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 10px 14px;
-    cursor: pointer;
-    transition: all .15s;
-    min-width: 160px;
-    flex: 1;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 9px 13px; cursor: pointer;
+    transition: all .15s; min-width: 130px; flex-shrink: 0;
+    user-select: none;
   }
   .scenario-card:hover { transform: translateY(-1px); }
   .scenario-card.active { border-width: 2px; }
+  .sc-rc   { font-size: 17px; font-weight: 800; margin-bottom: 1px; }
+  .sc-name { font-size: 10px; font-weight: 600; margin-bottom: 1px; }
+  .sc-trig { font-size: 9px; color: var(--muted); }
 
-  .sc-rc   { font-size: 18px; font-weight: 700; margin-bottom: 2px; }
-  .sc-name { font-size: 11px; font-weight: 600; margin-bottom: 2px; }
-  .sc-trig { font-size: 10px; color: var(--muted); }
+  .sc-approved   { border-color:var(--green);  } .sc-approved   .sc-rc { color:var(--green);  }
+  .sc-decline    { border-color:var(--red);    } .sc-decline    .sc-rc { color:var(--red);    }
+  .sc-ineligible { border-color:var(--amber);  } .sc-ineligible .sc-rc { color:var(--amber);  }
+  .sc-duplicate  { border-color:var(--purple); } .sc-duplicate  .sc-rc { color:var(--purple); }
+  .sc-timeout    { border-color:var(--gray);   } .sc-timeout    .sc-rc { color:var(--gray);   }
+  .sc-velocity   { border-color:var(--blue);   } .sc-velocity   .sc-rc { color:var(--blue);   }
+  .sc-restricted { border-color:var(--orange); } .sc-restricted .sc-rc { color:var(--orange); }
 
-  .sc-approved  { border-color: var(--green);  }  .sc-approved  .sc-rc { color: var(--green);  }
-  .sc-decline   { border-color: var(--red);    }  .sc-decline   .sc-rc { color: var(--red);    }
-  .sc-ineligible{ border-color: var(--amber);  }  .sc-ineligible .sc-rc{ color: var(--amber);  }
-  .sc-duplicate { border-color: var(--purple); }  .sc-duplicate .sc-rc { color: var(--purple); }
-  .sc-timeout   { border-color: var(--gray);   }  .sc-timeout   .sc-rc { color: var(--gray);   }
-  .sc-velocity  { border-color: var(--blue);   }  .sc-velocity  .sc-rc { color: var(--blue);   }
+  .active.sc-approved   { background:var(--green-bg);  }
+  .active.sc-decline    { background:var(--red-bg);    }
+  .active.sc-ineligible { background:var(--amber-bg);  }
+  .active.sc-duplicate  { background:var(--purple-bg); }
+  .active.sc-timeout    { background:var(--gray-bg);   }
+  .active.sc-velocity   { background:var(--blue-bg);   }
+  .active.sc-restricted { background:var(--orange-bg); }
 
-  .active.sc-approved  { background: var(--green-bg);  }
-  .active.sc-decline   { background: var(--red-bg);    }
-  .active.sc-ineligible{ background: var(--amber-bg);  }
-  .active.sc-duplicate { background: var(--purple-bg); }
-  .active.sc-timeout   { background: var(--gray-bg);   }
-  .active.sc-velocity  { background: var(--blue-bg);   }
+  /* ── MAIN GRID ───────────────────────────────────────────────────────── */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
 
-  /* ── FORM PANEL ────────────────────────────────────────────────────────── */
+  /* ── FORM PANEL ──────────────────────────────────────────────────────── */
   .form-panel {
     background: var(--surface);
     border-right: 1px solid var(--border);
-    padding: 20px 24px;
+    padding: 16px 20px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
-  .panel-label {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 4px;
-  }
-  .field { display: flex; flex-direction: column; gap: 5px; }
+  .panel-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .field { display: flex; flex-direction: column; gap: 4px; }
   .field label { font-size: 11px; color: var(--muted); }
   .field input, .field select {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 8px 10px;
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 13px;
-    width: 100%;
-    outline: none;
-    transition: border-color .15s;
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 7px 9px; border-radius: 4px;
+    font-family: inherit; font-size: 13px; width: 100%;
+    outline: none; transition: border-color .15s;
   }
   .field input:focus, .field select:focus { border-color: var(--accent); }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  .hint { font-size: 10px; color: var(--muted); margin-top: 2px; }
-  .hint.trigger { color: var(--amber); }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .field-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .hint       { font-size: 10px; color: var(--muted); }
+  .hint.trig  { color: var(--amber); }
+  .section-divider {
+    border: none; border-top: 1px dashed var(--border);
+    margin: 4px 0;
+  }
+  .flow-label {
+    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--muted); display: flex; align-items: center; gap: 8px;
+  }
+  .flow-label::after { content:''; flex:1; border-top:1px dashed var(--border); }
 
   .btn-send {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.5px;
-    transition: all .15s;
-    margin-top: 4px;
+    background: var(--accent); color: #fff; border: none;
+    padding: 11px; border-radius: 5px; font-family: inherit;
+    font-size: 13px; font-weight: 700; cursor: pointer;
+    letter-spacing: .5px; transition: all .15s; margin-top: 2px;
   }
-  .btn-send:hover   { background: #1e40af; }
-  .btn-send:active  { transform: scale(.98); }
-  .btn-send:disabled{ background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-send:hover  { background: #1e40af; }
+  .btn-send:active { transform: scale(.98); }
+  .btn-send:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .spinner {
+    display: none; width: 16px; height: 16px;
+    border: 2px solid var(--border); border-top-color: var(--accent);
+    border-radius: 50%; animation: spin .6s linear infinite; margin: 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ── RESPONSE PANEL ────────────────────────────────────────────────────── */
+  /* ── RESPONSE PANEL ──────────────────────────────────────────────────── */
   .response-panel {
-    background: var(--bg);
-    padding: 20px 24px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+    background: var(--bg); padding: 16px 20px;
+    overflow-y: auto; display: flex; flex-direction: column; gap: 12px;
   }
 
-  /* status card */
+  /* Status cards */
+  .status-cards { display: flex; flex-direction: column; gap: 8px; }
   .status-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 14px;
   }
-  .status-rc {
-    font-size: 40px;
-    font-weight: 800;
-    line-height: 1;
-    min-width: 60px;
-    text-align: center;
+  .status-card.step-blocked { opacity: .45; }
+  .step-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--muted);
+    margin-bottom: 2px;
   }
+  .status-rc   { font-size: 36px; font-weight: 800; line-height: 1; min-width: 54px; text-align: center; }
   .status-info { flex: 1; }
-  .status-desc { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .status-desc { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
   .status-meta { font-size: 11px; color: var(--muted); line-height: 1.6; }
 
-  .status-approved  .status-rc { color: var(--green);  }
-  .status-decline   .status-rc { color: var(--red);    }
-  .status-ineligible .status-rc{ color: var(--amber);  }
-  .status-duplicate .status-rc { color: var(--purple); }
-  .status-timeout   .status-rc { color: var(--gray);   }
-  .status-velocity  .status-rc { color: var(--blue);   }
-  .status-idle      .status-rc { color: var(--muted);  }
+  .status-approved   .status-rc { color: var(--green);  }
+  .status-decline    .status-rc { color: var(--red);     }
+  .status-ineligible .status-rc { color: var(--amber);   }
+  .status-duplicate  .status-rc { color: var(--purple);  }
+  .status-timeout    .status-rc { color: var(--gray);    }
+  .status-velocity   .status-rc { color: var(--blue);    }
+  .status-restricted .status-rc { color: var(--orange);  }
+  .status-idle       .status-rc { color: var(--muted);   }
 
-  /* json panes */
+  /* JSON tabs */
   .json-tabs {
-    display: flex;
-    gap: 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    flex: 1;
-    flex-direction: column;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; overflow: hidden; flex: 1;
+    display: flex; flex-direction: column;
   }
-  .tab-row {
-    display: flex;
-    border-bottom: 1px solid var(--border);
-  }
+  .tab-row { display: flex; border-bottom: 1px solid var(--border); }
   .tab-btn {
-    background: transparent;
-    border: none;
-    color: var(--muted);
-    padding: 8px 16px;
-    font-family: inherit;
-    font-size: 11px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    border-bottom: 2px solid transparent;
-    transition: all .15s;
+    background: transparent; border: none; color: var(--muted);
+    padding: 7px 14px; font-family: inherit; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+    border-bottom: 2px solid transparent; transition: all .15s;
   }
   .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
   .tab-btn:hover  { color: var(--text); }
   .json-body {
-    padding: 14px 16px;
-    overflow-y: auto;
-    max-height: 280px;
-    flex: 1;
+    padding: 12px 14px; overflow-y: auto; flex: 1; max-height: 240px;
   }
   pre {
     font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-    font-size: 12px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    word-break: break-all;
-    color: var(--text);
+    font-size: 11.5px; line-height: 1.55; white-space: pre-wrap; word-break: break-all;
   }
-  .json-key   { color: #7dd3fc; }
-  .json-str   { color: #86efac; }
-  .json-num   { color: #fca5a5; }
-  .json-bool  { color: #c084fc; }
-  .json-null  { color: var(--muted); }
-
+  .json-key  { color: #7dd3fc; } .json-str  { color: #86efac; }
+  .json-num  { color: #fca5a5; } .json-bool { color: #c084fc; }
+  .json-null { color: var(--muted); }
   .empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100px;
-    color: var(--muted);
-    font-size: 12px;
-    font-style: italic;
+    display: flex; align-items: center; justify-content: center;
+    height: 80px; color: var(--muted); font-size: 12px; font-style: italic;
   }
 
-  /* ── TRANSACTION LOG ───────────────────────────────────────────────────── */
+  /* ── TRANSACTION LOG ─────────────────────────────────────────────────── */
   .log-panel {
-    grid-column: 1 / -1;
+    flex-shrink: 0;
     background: var(--surface);
     border-top: 1px solid var(--border);
-    max-height: 220px;
+    max-height: 190px;
     overflow-y: auto;
   }
   .log-header {
-    padding: 10px 24px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    background: var(--surface);
-    z-index: 1;
+    padding: 8px 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; background: var(--surface); z-index: 1;
   }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
   thead th {
-    background: var(--surface2);
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 8px 16px;
-    text-align: left;
-    font-weight: normal;
+    background: var(--surface2); color: var(--muted);
+    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    padding: 6px 16px; text-align: left; font-weight: normal;
     border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 41px;
   }
-  tbody tr {
-    border-bottom: 1px solid var(--border);
-    cursor: pointer;
-    transition: background .1s;
-  }
+  tbody tr { border-bottom: 1px solid var(--border); cursor: pointer; transition: background .1s; }
   tbody tr:hover { background: var(--surface2); }
-  tbody td { padding: 7px 16px; color: var(--text); }
+  tbody td { padding: 6px 16px; }
+  .type-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: .5px;
+    padding: 2px 6px; border-radius: 3px;
+  }
+  .type-oct  { background: var(--blue-bg);  color: var(--blue);   border: 1px solid var(--blue);  }
+  .type-aft  { background: var(--amber-bg); color: var(--amber);  border: 1px solid var(--amber); }
+  .type-pair { background: var(--purple-bg);color: var(--purple); border: 1px solid var(--purple);}
   .rc-pill {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 10px;
-    font-weight: 700;
+    display: inline-block; padding: 2px 7px; border-radius: 3px;
+    font-size: 10px; font-weight: 700;
   }
-  .pill-approved  { background: var(--green-bg);  color: var(--green);  border: 1px solid var(--green);  }
-  .pill-decline   { background: var(--red-bg);    color: var(--red);    border: 1px solid var(--red);    }
-  .pill-ineligible{ background: var(--amber-bg);  color: var(--amber);  border: 1px solid var(--amber);  }
-  .pill-duplicate { background: var(--purple-bg); color: var(--purple); border: 1px solid var(--purple); }
-  .pill-timeout   { background: var(--gray-bg);   color: var(--gray);   border: 1px solid var(--gray);   }
-  .pill-velocity  { background: var(--blue-bg);   color: var(--blue);   border: 1px solid var(--blue);   }
-
-  /* loading spinner */
-  .spinner {
-    display: none;
-    width: 16px; height: 16px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin .6s linear infinite;
-    margin: 0 auto;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .pill-approved   { background:var(--green-bg);  color:var(--green);  border:1px solid var(--green);  }
+  .pill-decline    { background:var(--red-bg);    color:var(--red);    border:1px solid var(--red);    }
+  .pill-ineligible { background:var(--amber-bg);  color:var(--amber);  border:1px solid var(--amber);  }
+  .pill-duplicate  { background:var(--purple-bg); color:var(--purple); border:1px solid var(--purple); }
+  .pill-timeout    { background:var(--gray-bg);   color:var(--gray);   border:1px solid var(--gray);   }
+  .pill-velocity   { background:var(--blue-bg);   color:var(--blue);   border:1px solid var(--blue);   }
+  .pill-restricted { background:var(--orange-bg); color:var(--orange); border:1px solid var(--orange); }
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ──────────────────────────────────────────────────────────────── -->
+<!-- ── HEADER ───────────────────────────────────────────────────────────────── -->
 <header>
   <div class="logo">
     <div class="logo-badge">VISA DIRECT</div>
     <div>
       <div class="logo-title">Mock Server</div>
-      <div class="logo-sub">OCT / Push Funds — Scenario Simulator</div>
+      <div class="logo-sub">OCT · AFT · Paired Flow Simulator</div>
     </div>
   </div>
-  <div class="header-actions">
+  <div class="header-right">
     <div class="server-status"><div class="status-dot"></div>MOCK ONLINE</div>
-    <button class="btn-reset" onclick="resetSession()">↺ Reset Session</button>
+    <button class="btn-sm" onclick="resetSession()">↺ Reset Session</button>
   </div>
 </header>
 
-<!-- ── OUTER WRAPPER ────────────────────────────────────────────────────────── -->
-<div style="display:flex;flex-direction:column;height:calc(100vh - 57px);">
+<!-- ── TX TYPE TABS ──────────────────────────────────────────────────────────── -->
+<div class="tx-tabs">
+  <button class="tx-tab active" data-tab="oct" onclick="switchTxType('oct',this)">
+    OCT — Push to Card <span class="tab-pill oct-pill">PUSH</span>
+  </button>
+  <button class="tx-tab" data-tab="aft" onclick="switchTxType('aft',this)">
+    AFT — Pull from Source <span class="tab-pill aft-pill">PULL</span>
+  </button>
+  <button class="tx-tab" data-tab="pair" onclick="switchTxType('pair',this)">
+    AFT → OCT — Full Flow <span class="tab-pill pair-pill">2-LEG</span>
+  </button>
+</div>
 
-  <!-- ── SCENARIO CARDS ──────────────────────────────────────────────────── -->
-  <div class="scenario-panel">
-    <div class="scenario-label">Scenario Triggers — click to select, then Send OCT</div>
-    <div class="scenario-grid" id="scenarioGrid"></div>
+<!-- ── SCENARIO PANEL ───────────────────────────────────────────────────────── -->
+<div class="scenario-panel">
+  <div class="scenario-label" id="scenarioLabel">Scenario Triggers — click to select</div>
+  <div class="scenario-grid" id="scenarioGrid"></div>
+</div>
+
+<!-- ── MAIN GRID ─────────────────────────────────────────────────────────────── -->
+<div class="main-grid">
+
+  <!-- FORM -->
+  <div class="form-panel" id="formPanel">
+    <!-- dynamically rendered per txType -->
   </div>
 
-  <!-- ── MAIN GRID ───────────────────────────────────────────────────────── -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;flex:1;min-height:0;overflow:hidden;">
+  <!-- RESPONSE -->
+  <div class="response-panel">
+    <div class="panel-label" id="respLabel">Response</div>
 
-    <!-- FORM -->
-    <div class="form-panel">
-      <div class="panel-label">OCT Request — Push Funds Transaction</div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Amount (USD)</label>
-          <input id="amount" type="number" step="0.01" min="0.01" value="100.00" oninput="onAmountChange()"/>
-          <div class="hint trigger" id="amountHint"></div>
-        </div>
-        <div class="field">
-          <label>Business Application ID</label>
-          <select id="bizAppId">
-            <option value="AA">AA — Account to Account</option>
-            <option value="BB">BB — Business Disbursement</option>
-            <option value="GD">GD — Government Disbursement</option>
-            <option value="PP">PP — Person to Person</option>
-            <option value="WT">WT — Wallet Transfer</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Recipient PAN (push-to card)</label>
-        <input id="recipientPAN" type="text" value="4957030420210496" maxlength="19"/>
-        <div class="hint">16-digit Visa test card number</div>
-      </div>
-
-      <div class="field">
-        <label>Sender PAN</label>
-        <input id="senderPAN" type="text" value="4895142232120006" maxlength="19"/>
-      </div>
-
-      <div class="field-row">
-        <div class="field">
-          <label>Systems Trace Audit Number (STAN)</label>
-          <input id="stan" type="number" value="451001"/>
-          <div class="hint">Resubmit same STAN → auto RC 94</div>
-        </div>
-        <div class="field">
-          <label>Acquiring BIN</label>
-          <input id="acquiringBin" type="text" value="408999" maxlength="6"/>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Sender Name / Address</label>
-        <input id="senderAddress" type="text" value="Arikina Corp, 123 Main St, San Francisco CA 94102"/>
-      </div>
-
-      <div id="scenarioOverrideField" style="display:none;">
-        <div class="field">
-          <label>Scenario Override (active)</label>
-          <input id="scenarioOverride" type="text" readonly style="color:var(--amber);"/>
-        </div>
-      </div>
-
-      <button class="btn-send" id="sendBtn" onclick="sendOCT()">→ Send OCT</button>
-      <div class="spinner" id="spinner"></div>
-    </div>
-
-    <!-- RESPONSE -->
-    <div class="response-panel">
-      <div class="panel-label">Response</div>
-
-      <div class="status-card status-idle" id="statusCard">
-        <div class="status-rc" id="statusRC">—</div>
+    <div class="status-cards" id="statusCards">
+      <div class="status-card status-idle">
+        <div class="status-rc">—</div>
         <div class="status-info">
-          <div class="status-desc" id="statusDesc">No transaction sent yet</div>
-          <div class="status-meta" id="statusMeta">Select a scenario and click Send OCT</div>
-        </div>
-      </div>
-
-      <div class="json-tabs">
-        <div class="tab-row">
-          <button class="tab-btn active" onclick="switchTab('response',this)">Response JSON</button>
-          <button class="tab-btn" onclick="switchTab('request',this)">Request JSON</button>
-        </div>
-        <div class="json-body" id="jsonBody">
-          <div class="empty-state">Response will appear here</div>
+          <div class="status-desc">No transaction sent yet</div>
+          <div class="status-meta">Select a scenario and click Send</div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ── TRANSACTION LOG ─────────────────────────────────────────────────── -->
-  <div class="log-panel">
-    <div class="log-header">
-      <span class="panel-label" style="margin:0;">Transaction Log</span>
-      <span style="font-size:11px;color:var(--muted);" id="logCount">0 transactions</span>
+    <div class="json-tabs">
+      <div class="tab-row">
+        <button class="tab-btn active" onclick="switchJsonTab('response',this)">Response JSON</button>
+        <button class="tab-btn"        onclick="switchJsonTab('request',this)">Request JSON</button>
+      </div>
+      <div class="json-body" id="jsonBody">
+        <div class="empty-state">Response will appear here</div>
+      </div>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Time</th>
-          <th>Amount</th>
-          <th>Recipient PAN</th>
-          <th>STAN</th>
-          <th>RC</th>
-          <th>Description</th>
-          <th>Tx ID</th>
-        </tr>
-      </thead>
-      <tbody id="logBody">
-        <tr><td colspan="8" style="padding:16px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>
-      </tbody>
-    </table>
   </div>
+</div>
 
+<!-- ── TRANSACTION LOG ───────────────────────────────────────────────────────── -->
+<div class="log-panel">
+  <div class="log-header">
+    <span class="panel-label" style="margin:0;">Transaction Log</span>
+    <span style="font-size:11px;color:var(--muted);" id="logCount">0 transactions</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Type</th><th>Time</th><th>Amount</th>
+        <th>Source / Recipient</th><th>STAN</th><th>RC</th><th>Result</th>
+      </tr>
+    </thead>
+    <tbody id="logBody">
+      <tr><td colspan="8" style="padding:14px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>
+    </tbody>
+  </table>
 </div>
 
 <script>
 // ── STATE ─────────────────────────────────────────────────────────────────────
-
 let scenarios     = [];
+let txType        = 'oct';         // 'oct' | 'aft' | 'pair'
 let activeScenario = null;
 let lastRequest   = null;
 let lastResponse  = null;
-let currentTab    = 'response';
+let jsonTab       = 'response';
+
+const OCT_ORDER  = ['00','63','94','05','91','14','51','61'];
+const AFT_ORDER  = ['00','51','57','62','78','96','05','94'];
+const PAIR_ORDER = ['00','51','57','62','78','96','05','94'];  // AFT side drives paired flow
+
+const SHORT = {
+  'Approved':                                    'Approved',
+  'Do Not Honor — Issuer Decline':               'Issuer Decline',
+  'Invalid Card Number':                         'Invalid Card',
+  'Insufficient Funds':                          'Insuff. Funds',
+  'Exceeds Withdrawal Frequency Limit':          'Velocity Limit',
+  'Card Not Eligible for Visa Direct':           'Not Eligible',
+  'Issuer or Switch Inoperative — Timeout':      'Issuer Timeout',
+  'Duplicate Transaction — STAN Already Seen':   'Duplicate Tx',
+  'Transaction Not Permitted to Cardholder':     'Not Permitted',
+  'Restricted Card — Wallet / Account Blocked':  'Restricted',
+  'No Account / Account Not Found at Issuer':    'No Account',
+  'System Malfunction — Retry After Delay':      'Sys Malfunction',
+};
+function short(desc) { return SHORT[desc] || desc; }
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────
-
 async function boot() {
   try {
-    const res = await fetch('/api/scenarios');
-    scenarios = await res.json();
-    renderScenarioCards();
+    scenarios = await (await fetch('/api/scenarios')).json();
+    renderScenarios();
+    renderForm();
     await refreshLog();
-  } catch (e) {
-    console.error('Could not reach mock server:', e);
-  }
+  } catch(e) { console.error('Server unreachable', e); }
+}
+
+// ── TX TYPE SWITCHING ─────────────────────────────────────────────────────────
+function switchTxType(type, btn) {
+  txType = type;
+  activeScenario = null;
+  document.querySelectorAll('.tx-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderScenarios();
+  renderForm();
+  clearResponse();
 }
 
 // ── SCENARIO CARDS ────────────────────────────────────────────────────────────
-
-const SCENARIO_ORDER = ['00','63','94','05','91','14','51','61'];
-
-function renderScenarioCards() {
-  const grid = document.getElementById('scenarioGrid');
+function renderScenarios() {
+  const grid   = document.getElementById('scenarioGrid');
+  const label  = document.getElementById('scenarioLabel');
   grid.innerHTML = '';
-  const ordered = SCENARIO_ORDER
-    .map(code => scenarios.find(s => s.code === code))
+
+  const order = txType === 'oct' ? OCT_ORDER : AFT_ORDER;
+  const field = txType === 'oct' ? 'oct' : 'aft';
+  const note  = txType === 'pair'
+    ? 'Scenario controls AFT (pull) leg — OCT approves automatically when AFT clears'
+    : 'Click a card to select scenario, then Send';
+  label.textContent = note;
+
+  const filtered = order
+    .map(code => scenarios.find(s => s.code === code && s[field]))
     .filter(Boolean);
 
-  for (const s of ordered) {
+  for (const s of filtered) {
     const card = document.createElement('div');
     card.className = `scenario-card sc-${s.category}`;
     card.dataset.code = s.code;
     card.innerHTML = `
       <div class="sc-rc">RC ${s.code}</div>
-      <div class="sc-name">${shortName(s.description)}</div>
-      <div class="sc-trig">Trigger: $X.${s.triggerCents}</div>
-    `;
+      <div class="sc-name">${short(s.description)}</div>
+      <div class="sc-trig">$X.${s.triggerCents}</div>`;
     card.addEventListener('click', () => selectScenario(s));
     grid.appendChild(card);
   }
 }
 
-function shortName(desc) {
-  const map = {
-    'Approved':                                    'Approved',
-    'Do Not Honor — Issuer Decline':               'Issuer Decline',
-    'Invalid Card Number':                         'Invalid Card',
-    'Insufficient Funds':                          'Insufficient Funds',
-    'Exceeds Withdrawal Frequency Limit':          'Velocity Limit',
-    'Card Not Eligible for Visa Direct':           'Not Eligible',
-    'Issuer or Switch Inoperative — Timeout':      'Issuer Timeout',
-    'Duplicate Transaction — STAN Already Seen':   'Duplicate Tx',
-  };
-  return map[desc] || desc;
-}
-
 function selectScenario(s) {
   activeScenario = s;
-
-  // Update card highlights
   document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('active'));
-  const card = document.querySelector(`.scenario-card[data-code="${s.code}"]`);
-  if (card) card.classList.add('active');
+  document.querySelector(`.scenario-card[data-code="${s.code}"]`)?.classList.add('active');
 
-  // Set amount trigger (preserve integer part, set cents)
-  const amountEl = document.getElementById('amount');
-  const intPart  = Math.floor(parseFloat(amountEl.value) || 100);
-  amountEl.value = `${intPart}.${s.triggerCents}`;
-  onAmountChange();
-
-  // Show scenario override indicator
-  document.getElementById('scenarioOverride').value = `RC ${s.code} — ${shortName(s.description)}`;
-  document.getElementById('scenarioOverrideField').style.display = 'block';
-}
-
-function onAmountChange() {
-  const amount = parseFloat(document.getElementById('amount').value || '0');
-  const cents  = Math.round((amount % 1) * 100).toString().padStart(2, '0');
-  const matched = scenarios.find(s => s.triggerCents === cents);
-  const hint = document.getElementById('amountHint');
-  if (matched) {
-    hint.textContent = `→ will return RC ${matched.code}: ${shortName(matched.description)}`;
-    hint.style.display = 'block';
-  } else {
-    hint.textContent = '';
+  // Set amount trigger
+  const el = document.getElementById('amount');
+  if (el) {
+    const int = Math.floor(parseFloat(el.value) || 100);
+    el.value = `${int}.${s.triggerCents}`;
+    updateAmountHint();
   }
 }
 
-// ── SEND OCT ─────────────────────────────────────────────────────────────────
+// ── FORM RENDERING ────────────────────────────────────────────────────────────
+let stanCounter = 451001;
+
+function renderForm() {
+  const panel = document.getElementById('formPanel');
+  if (txType === 'oct') panel.innerHTML = octForm();
+  if (txType === 'aft') panel.innerHTML = aftForm();
+  if (txType === 'pair') panel.innerHTML = pairForm();
+  updateAmountHint();
+}
+
+function octForm() {
+  return `
+    <div class="panel-label">OCT — Push Funds Transaction</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Amount (USD)</label>
+        <input id="amount" type="number" step="0.01" min="0.01" value="100.00" oninput="updateAmountHint()"/>
+        <div class="hint trig" id="amountHint"></div>
+      </div>
+      <div class="field">
+        <label>Business Application ID</label>
+        <select id="bizAppId">
+          <option value="AA">AA — Account to Account</option>
+          <option value="BB">BB — Business Disbursement</option>
+          <option value="GD">GD — Government Disbursement</option>
+          <option value="PP">PP — Person to Person</option>
+          <option value="WT">WT — Wallet Transfer</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Recipient PAN (push-to card)</label>
+      <input id="recipientPAN" type="text" value="4957030420210496" maxlength="19"/>
+      <div class="hint">16-digit Visa test card</div>
+    </div>
+    <div class="field">
+      <label>Sender PAN (funding source)</label>
+      <input id="senderPAN" type="text" value="4895142232120006" maxlength="19"/>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>STAN</label>
+        <input id="stan" type="number" value="${stanCounter}"/>
+        <div class="hint">Same STAN twice → auto RC 94</div>
+      </div>
+      <div class="field">
+        <label>Acquiring BIN</label>
+        <input id="acquiringBin" type="text" value="408999" maxlength="6"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Sender Address</label>
+      <input id="senderAddress" type="text" value="Arikina Corp, 123 Main St, San Francisco CA 94102"/>
+    </div>
+    <button class="btn-send" id="sendBtn" onclick="sendOCT()">→ Send OCT (Push)</button>
+    <div class="spinner" id="spinner"></div>`;
+}
+
+function aftForm() {
+  return `
+    <div class="panel-label">AFT — Pull Funds from Source / Wallet</div>
+    <div class="field-row">
+      <div class="field">
+        <label>Amount (USD)</label>
+        <input id="amount" type="number" step="0.01" min="0.01" value="250.00" oninput="updateAmountHint()"/>
+        <div class="hint trig" id="amountHint"></div>
+      </div>
+      <div class="field">
+        <label>Source Currency</label>
+        <select id="srcCurrency">
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+          <option value="CAD">CAD</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Source PAN — card or wallet being pulled from</label>
+      <input id="sourcePAN" type="text" value="4895142232120006" maxlength="19"/>
+      <div class="hint">This is the account being debited</div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Card Expiry (YYYY-MM)</label>
+        <input id="srcExpiry" type="text" value="2028-12" maxlength="7"/>
+      </div>
+      <div class="field">
+        <label>CVV2</label>
+        <input id="cvv2" type="text" value="737" maxlength="4" placeholder="3–4 digits"/>
+        <div class="hint">Required for AFT verification</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>STAN</label>
+        <input id="stan" type="number" value="${stanCounter}"/>
+        <div class="hint">Same STAN twice → auto RC 94</div>
+      </div>
+      <div class="field">
+        <label>Acquiring BIN</label>
+        <input id="acquiringBin" type="text" value="408999" maxlength="6"/>
+      </div>
+    </div>
+    <div class="field">
+      <label>Card Acceptor / Merchant Name</label>
+      <input id="merchantName" type="text" value="Arikina Money Transfer"/>
+    </div>
+    <button class="btn-send" id="sendBtn" onclick="sendAFT()">← Send AFT (Pull)</button>
+    <div class="spinner" id="spinner"></div>`;
+}
+
+function pairForm() {
+  return `
+    <div class="panel-label">AFT → OCT — Pull from Source, Push to Recipient</div>
+    <div class="field">
+      <label>Amount (USD)</label>
+      <input id="amount" type="number" step="0.01" min="0.01" value="500.00" oninput="updateAmountHint()"/>
+      <div class="hint trig" id="amountHint"></div>
+    </div>
+    <hr class="section-divider"/>
+    <div class="flow-label">Step 1 — AFT (pull from source)</div>
+    <div class="field">
+      <label>Source PAN (debit / wallet / card on file)</label>
+      <input id="sourcePAN" type="text" value="4895142232120006" maxlength="19"/>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Source Expiry</label>
+        <input id="srcExpiry" type="text" value="2028-12" maxlength="7"/>
+      </div>
+      <div class="field">
+        <label>CVV2</label>
+        <input id="cvv2" type="text" value="737" maxlength="4"/>
+      </div>
+    </div>
+    <hr class="section-divider"/>
+    <div class="flow-label">Step 2 — OCT (push to recipient)</div>
+    <div class="field">
+      <label>Recipient PAN (push-to card)</label>
+      <input id="recipientPAN" type="text" value="4957030420210496" maxlength="19"/>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>STAN (AFT leg)</label>
+        <input id="stan" type="number" value="${stanCounter}"/>
+        <div class="hint">OCT uses STAN+1 automatically</div>
+      </div>
+      <div class="field">
+        <label>Business App ID</label>
+        <select id="bizAppId">
+          <option value="PP">PP — Person to Person</option>
+          <option value="AA">AA — Account to Account</option>
+          <option value="BB">BB — Business Disbursement</option>
+          <option value="WT">WT — Wallet Transfer</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-send" id="sendBtn" onclick="sendPaired()">⇄ Run Full Flow (AFT → OCT)</button>
+    <div class="spinner" id="spinner"></div>`;
+}
+
+// ── AMOUNT HINT ────────────────────────────────────────────────────────────────
+function updateAmountHint() {
+  const el   = document.getElementById('amount');
+  const hint = document.getElementById('amountHint');
+  if (!el || !hint) return;
+  const cents  = Math.round((parseFloat(el.value || '0') % 1) * 100).toString().padStart(2, '0');
+  const field  = txType === 'oct' ? 'oct' : 'aft';
+  const match  = scenarios.find(s => s.triggerCents === cents && s[field]);
+  hint.textContent = match ? `→ RC ${match.code}: ${short(match.description)}` : '';
+}
+
+// ── SEND FUNCTIONS ────────────────────────────────────────────────────────────
+function setLoading(on) {
+  const btn = document.getElementById('sendBtn');
+  const spn = document.getElementById('spinner');
+  if (btn) btn.disabled = on;
+  if (spn) spn.style.display = on ? 'block' : 'none';
+}
 
 async function sendOCT() {
-  const amount   = parseFloat(document.getElementById('amount').value);
-  const stan     = parseInt(document.getElementById('stan').value);
-  const recipient = document.getElementById('recipientPAN').value.replace(/\s/g, '');
-  const sender    = document.getElementById('senderPAN').value.replace(/\s/g, '');
-  const rrn = String(stan).padStart(12, '0');
-
+  const stan = parseInt(document.getElementById('stan').value);
   const body = {
-    systemsTraceAuditNumber:        stan,
-    retrievalReferenceNumber:       rrn,
-    localTransactionDateTime:       new Date().toISOString().slice(0, 19),
-    acquiringBin:                   document.getElementById('acquiringBin').value,
-    acquirerCountryCode:            '840',
-    senderPrimaryAccountNumber:     sender,
-    senderCardExpiryDate:           '2028-12',
-    senderCurrencyCode:             'USD',
-    senderAddress:                  document.getElementById('senderAddress').value,
-    recipientPrimaryAccountNumber:  recipient,
-    transactionCurrencyCode:        'USD',
-    amount:                         amount.toFixed(2),
-    businessApplicationId:          document.getElementById('bizAppId').value,
+    systemsTraceAuditNumber:       stan,
+    retrievalReferenceNumber:      String(stan).padStart(12, '0'),
+    localTransactionDateTime:      new Date().toISOString().slice(0, 19),
+    acquiringBin:                  document.getElementById('acquiringBin').value,
+    acquirerCountryCode:           '840',
+    senderPrimaryAccountNumber:    document.getElementById('senderPAN').value.replace(/\s/g,''),
+    senderCardExpiryDate:          '2028-12',
+    senderCurrencyCode:            'USD',
+    senderAddress:                 document.getElementById('senderAddress').value,
+    recipientPrimaryAccountNumber: document.getElementById('recipientPAN').value.replace(/\s/g,''),
+    transactionCurrencyCode:       'USD',
+    amount:                        parseFloat(document.getElementById('amount').value).toFixed(2),
+    businessApplicationId:         document.getElementById('bizAppId').value,
+    cardAcceptor: { name:'VISA DIRECT MOCK', idCode:'MOCK1234MOCK123', terminalId:'MOCK1234',
+                    address:{ country:'USA', zipCode:'94404', state:'CA', county:'San Mateo' } },
+    ...(activeScenario ? { _scenario: activeScenario.code } : {}),
+  };
+  await fireRequest('/api/pushfunds', body, 'OCT');
+  document.getElementById('stan').value = stan + 1;
+  stanCounter = stan + 1;
+}
+
+async function sendAFT() {
+  const stan = parseInt(document.getElementById('stan').value);
+  const body = {
+    systemsTraceAuditNumber:    stan,
+    retrievalReferenceNumber:   String(stan).padStart(12, '0'),
+    localTransactionDateTime:   new Date().toISOString().slice(0, 19),
+    acquiringBin:               document.getElementById('acquiringBin').value,
+    acquirerCountryCode:        '840',
+    senderPrimaryAccountNumber: document.getElementById('sourcePAN').value.replace(/\s/g,''),
+    senderCardExpiryDate:       document.getElementById('srcExpiry').value,
+    cardCvv2Value:              document.getElementById('cvv2').value,
+    senderCurrencyCode:         document.getElementById('srcCurrency').value,
+    localTransactionCurrencyCode: document.getElementById('srcCurrency').value,
+    amount:                     parseFloat(document.getElementById('amount').value).toFixed(2),
     cardAcceptor: {
-      name:       'VISA DIRECT MOCK',
-      idCode:     'MOCK1234MOCK123',
-      terminalId: 'MOCK1234',
-      address:    { country: 'USA', zipCode: '94404', state: 'CA', county: 'San Mateo' },
+      name:       document.getElementById('merchantName').value,
+      idCode:     'MOCK1234MOCK123', terminalId: 'MOCK1234',
+      address:    { country:'USA', zipCode:'94404', state:'CA' },
     },
     ...(activeScenario ? { _scenario: activeScenario.code } : {}),
   };
+  await fireRequest('/api/pullfunds', body, 'AFT');
+  document.getElementById('stan').value = stan + 1;
+  stanCounter = stan + 1;
+}
 
+async function sendPaired() {
+  const stan = parseInt(document.getElementById('stan').value);
+  const body = {
+    systemsTraceAuditNumber:       stan,
+    retrievalReferenceNumber:      String(stan).padStart(12, '0'),
+    localTransactionDateTime:      new Date().toISOString().slice(0, 19),
+    acquiringBin:                  '408999',
+    acquirerCountryCode:           '840',
+    senderPrimaryAccountNumber:    document.getElementById('sourcePAN').value.replace(/\s/g,''),
+    senderCardExpiryDate:          document.getElementById('srcExpiry').value,
+    cardCvv2Value:                 document.getElementById('cvv2').value,
+    senderCurrencyCode:            'USD',
+    recipientPrimaryAccountNumber: document.getElementById('recipientPAN').value.replace(/\s/g,''),
+    transactionCurrencyCode:       'USD',
+    amount:                        parseFloat(document.getElementById('amount').value).toFixed(2),
+    businessApplicationId:         document.getElementById('bizAppId').value,
+    cardAcceptor: { name:'VISA DIRECT MOCK', idCode:'MOCK1234MOCK123', terminalId:'MOCK1234',
+                    address:{ country:'USA', zipCode:'94404', state:'CA' } },
+    ...(activeScenario ? { _scenario: activeScenario.code } : {}),
+  };
+  await fireRequest('/api/pairedfunds', body, 'AFT→OCT');
+  document.getElementById('stan').value = stan + 2;  // AFT uses stan, OCT uses stan+1
+  stanCounter = stan + 2;
+}
+
+// ── CORE REQUEST FIRE ─────────────────────────────────────────────────────────
+async function fireRequest(endpoint, body, type) {
   lastRequest  = body;
   lastResponse = null;
-
-  // Show loading state
-  const btn = document.getElementById('sendBtn');
-  const spn = document.getElementById('spinner');
-  btn.disabled = true;
-  spn.style.display = 'block';
-  setStatusCard('idle', '...', 'Sending', 'Awaiting response...');
+  setLoading(true);
+  setStatusIdle();
 
   try {
-    const res  = await fetch('/api/pushfunds', {
-      method:  'POST',
+    const res  = await fetch(endpoint, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(body),
+      body: JSON.stringify(body),
     });
     const data = await res.json();
     lastResponse = data;
 
-    const rc     = data.responseCode || data.actionCode || '??';
-    const scInfo = scenarios.find(s => s.code === rc);
-    const cat    = scInfo ? scInfo.category : 'unknown';
-    const desc   = scInfo ? scInfo.description : 'Unknown response';
+    if (type === 'AFT→OCT') {
+      renderPairedStatus(data);
+    } else {
+      renderSingleStatus(data, type);
+    }
 
-    const meta = [
-      data.approvalCode      ? `Approval: ${data.approvalCode}` : null,
-      data.transactionIdentifier ? `Tx ID: ${data.transactionIdentifier}` : null,
-      data.transmissionDateTime  ? `Time: ${new Date(data.transmissionDateTime).toLocaleTimeString()}` : null,
-    ].filter(Boolean).join('  ·  ');
-
-    setStatusCard(`status-${cat}`, `RC ${rc}`, desc, meta);
-    renderJSON();
+    renderJsonPanel();
     await refreshLog();
-
-    // Auto-increment STAN for next transaction
-    document.getElementById('stan').value = stan + 1;
-
   } catch (e) {
-    setStatusCard('status-decline', 'ERR', 'Network Error', e.message);
+    renderErrorStatus(e.message);
   } finally {
-    btn.disabled = false;
-    spn.style.display = 'none';
+    setLoading(false);
   }
 }
 
-// ── STATUS CARD ───────────────────────────────────────────────────────────────
+// ── STATUS RENDERING ──────────────────────────────────────────────────────────
+function setStatusIdle() {
+  document.getElementById('statusCards').innerHTML = `
+    <div class="status-card status-idle">
+      <div class="status-rc">...</div>
+      <div class="status-info">
+        <div class="status-desc">Sending</div>
+        <div class="status-meta">Awaiting mock response...</div>
+      </div>
+    </div>`;
+}
 
-function setStatusCard(cssClass, rc, desc, meta) {
-  const card = document.getElementById('statusCard');
-  card.className = `status-card ${cssClass}`;
-  document.getElementById('statusRC').textContent   = rc;
-  document.getElementById('statusDesc').textContent = desc;
-  document.getElementById('statusMeta').textContent = meta;
+function renderSingleStatus(data, type) {
+  const rc     = data.responseCode || data.actionCode || '??';
+  const scInfo = scenarios.find(s => s.code === rc);
+  const cat    = scInfo ? scInfo.category : 'unknown';
+
+  const meta = [
+    data.approvalCode       ? `Approval Code: ${data.approvalCode}`           : null,
+    data.availableBalance   ? `Available Balance: $${data.availableBalance}`  : null,
+    data.cardProductSubtype ? `Card Type: ${data.cardProductSubtype}`          : null,
+    data.transactionIdentifier ? `Tx ID: ${data.transactionIdentifier}`        : null,
+  ].filter(Boolean).join('  ·  ');
+
+  document.getElementById('statusCards').innerHTML = `
+    <div class="status-card status-${cat}">
+      <div class="status-rc">RC ${rc}</div>
+      <div class="status-info">
+        <div class="step-badge">${type}</div>
+        <div class="status-desc">${scInfo ? scInfo.description : 'Unknown Response'}</div>
+        <div class="status-meta">${meta || 'No additional detail'}</div>
+      </div>
+    </div>`;
+}
+
+function renderPairedStatus(data) {
+  const aftRC    = data.aft?.responseCode || '??';
+  const octRC    = data.oct?.responseCode || null;
+  const aftInfo  = scenarios.find(s => s.code === aftRC);
+  const aftCat   = aftInfo ? aftInfo.category : 'unknown';
+
+  const aftMeta = [
+    data.aft?.approvalCode     ? `Approval: ${data.aft.approvalCode}`               : null,
+    data.aft?.availableBalance ? `Source Balance After Pull: $${data.aft.availableBalance}` : null,
+    data.aft?.cardProductSubtype ? `Card Type: ${data.aft.cardProductSubtype}`       : null,
+  ].filter(Boolean).join('  ·  ');
+
+  const octMeta = data.oct
+    ? [
+        data.oct.approvalCode        ? `Approval: ${data.oct.approvalCode}`          : null,
+        data.oct.transactionIdentifier ? `Tx ID: ${data.oct.transactionIdentifier}`  : null,
+      ].filter(Boolean).join('  ·  ')
+    : 'Blocked — AFT leg did not approve';
+
+  const octCat = octRC ? 'approved' : 'decline';
+
+  document.getElementById('statusCards').innerHTML = `
+    <div class="status-card status-${aftCat}">
+      <div class="status-rc">RC ${aftRC}</div>
+      <div class="status-info">
+        <div class="step-badge">STEP 1 — AFT (Pull from Source)</div>
+        <div class="status-desc">${aftInfo ? aftInfo.description : 'Unknown'}</div>
+        <div class="status-meta">${aftMeta || 'No additional detail'}</div>
+      </div>
+    </div>
+    <div class="status-card status-${octCat}${!data.aftApproved ? ' step-blocked' : ''}">
+      <div class="status-rc">${octRC ? `RC ${octRC}` : '—'}</div>
+      <div class="status-info">
+        <div class="step-badge">STEP 2 — OCT (Push to Recipient)</div>
+        <div class="status-desc">${octRC ? 'Approved' : 'Not Executed'}</div>
+        <div class="status-meta">${octMeta}</div>
+      </div>
+    </div>`;
+}
+
+function renderErrorStatus(msg) {
+  document.getElementById('statusCards').innerHTML = `
+    <div class="status-card status-decline">
+      <div class="status-rc">ERR</div>
+      <div class="status-info">
+        <div class="status-desc">Network / Server Error</div>
+        <div class="status-meta">${msg}</div>
+      </div>
+    </div>`;
+}
+
+function clearResponse() {
+  document.getElementById('statusCards').innerHTML = `
+    <div class="status-card status-idle">
+      <div class="status-rc">—</div>
+      <div class="status-info">
+        <div class="status-desc">No transaction sent yet</div>
+        <div class="status-meta">Select a scenario and click Send</div>
+      </div>
+    </div>`;
+  document.getElementById('jsonBody').innerHTML = '<div class="empty-state">Response will appear here</div>';
 }
 
 // ── JSON VIEWER ───────────────────────────────────────────────────────────────
-
-function switchTab(tab, btn) {
-  currentTab = tab;
+function switchJsonTab(tab, btn) {
+  jsonTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderJSON();
+  renderJsonPanel();
 }
 
-function renderJSON() {
+function renderJsonPanel() {
   const el  = document.getElementById('jsonBody');
-  const obj = currentTab === 'response' ? lastResponse : lastRequest;
+  const obj = jsonTab === 'response' ? lastResponse : lastRequest;
   if (!obj) { el.innerHTML = '<div class="empty-state">No data</div>'; return; }
-  el.innerHTML = `<pre>${syntaxHighlight(JSON.stringify(obj, null, 2))}</pre>`;
+  el.innerHTML = `<pre>${highlight(JSON.stringify(obj, null, 2))}</pre>`;
 }
 
-function syntaxHighlight(json) {
+function highlight(json) {
   return json
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
     .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+\.?\d*([eE][+\-]?\d+)?)/g, m => {
-      let cls = 'json-num';
-      if (/^"/.test(m)) cls = /:$/.test(m) ? 'json-key' : 'json-str';
-      else if (/true|false/.test(m)) cls = 'json-bool';
-      else if (/null/.test(m)) cls = 'json-null';
-      return `<span class="${cls}">${m}</span>`;
+      let c = 'json-num';
+      if (/^"/.test(m)) c = /:$/.test(m) ? 'json-key' : 'json-str';
+      else if (/true|false/.test(m)) c = 'json-bool';
+      else if (/null/.test(m)) c = 'json-null';
+      return `<span class="${c}">${m}</span>`;
     });
 }
 
 // ── TRANSACTION LOG ───────────────────────────────────────────────────────────
-
 async function refreshLog() {
   try {
-    const res  = await fetch('/api/log');
-    const rows = await res.json();
+    const rows = await (await fetch('/api/log')).json();
     renderLog(rows);
-  } catch (e) {}
+  } catch(e) {}
 }
 
 function renderLog(rows) {
   document.getElementById('logCount').textContent = `${rows.length} transaction${rows.length !== 1 ? 's' : ''}`;
   const tbody = document.getElementById('logBody');
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="8" style="padding:16px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="padding:14px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>';
     return;
   }
-  tbody.innerHTML = rows.map(r => `
-    <tr onclick="loadLogEntry(${r.seq})">
+  window._logRows = rows;
+  tbody.innerHTML = rows.map(r => {
+    const typeClass = r.type === 'OCT' ? 'type-oct' : r.type === 'AFT' ? 'type-aft' : 'type-pair';
+    const cat = r.category || 'unknown';
+    return `<tr onclick="loadLogEntry(${r.seq})">
       <td style="color:var(--muted);">${r.seq}</td>
+      <td><span class="type-badge ${typeClass}">${r.type}</span></td>
       <td style="color:var(--muted);">${new Date(r.timestamp).toLocaleTimeString()}</td>
       <td>$${r.amount}</td>
       <td style="color:var(--muted);font-size:11px;">${r.recipient}</td>
       <td style="color:var(--muted);">${r.stan}</td>
-      <td><span class="rc-pill pill-${r.category}">${r.rc}</span></td>
-      <td>${shortName(r.description)}</td>
-      <td style="color:var(--muted);font-size:11px;">${r.response?.transactionIdentifier || '—'}</td>
-    </tr>
-  `).join('');
-
-  // store rows for click access
-  window._logRows = rows;
+      <td><span class="rc-pill pill-${cat}">${r.rc}</span></td>
+      <td style="font-size:11px;">${short(r.description)}</td>
+    </tr>`;
+  }).join('');
 }
 
 function loadLogEntry(seq) {
@@ -780,35 +929,30 @@ function loadLogEntry(seq) {
   if (!row) return;
   lastRequest  = row.request;
   lastResponse = row.response;
-  renderJSON();
-  const scInfo = scenarios.find(s => s.code === row.rc);
-  const cat    = scInfo ? scInfo.category : 'unknown';
-  const meta = [
-    row.response?.approvalCode ? `Approval: ${row.response.approvalCode}` : null,
-    row.response?.transactionIdentifier ? `Tx ID: ${row.response.transactionIdentifier}` : null,
-  ].filter(Boolean).join('  ·  ');
-  setStatusCard(`status-${cat}`, `RC ${row.rc}`, shortName(row.description), meta + `  ·  From log #${seq}`);
+  renderJsonPanel();
+  if (row.type === 'AFT→OCT') {
+    renderPairedStatus(row.response);
+  } else {
+    renderSingleStatus(row.response, row.type);
+  }
 }
 
 // ── RESET ─────────────────────────────────────────────────────────────────────
-
 async function resetSession() {
-  if (!confirm('Reset session? This clears STAN memory and the transaction log.')) return;
+  if (!confirm('Reset session? Clears STAN memory and transaction log.')) return;
   await fetch('/api/reset', { method: 'POST' });
   activeScenario = null;
   lastRequest    = null;
   lastResponse   = null;
+  stanCounter    = 451001;
   document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('active'));
-  document.getElementById('scenarioOverrideField').style.display = 'none';
-  document.getElementById('amountHint').textContent = '';
-  document.getElementById('stan').value = 451001;
-  document.getElementById('amount').value = '100.00';
-  setStatusCard('status-idle', '—', 'Session Reset', 'STAN memory cleared — start fresh');
-  document.getElementById('jsonBody').innerHTML = '<div class="empty-state">Response will appear here</div>';
+  clearResponse();
   renderLog([]);
+  // reset STAN in form
+  const stanEl = document.getElementById('stan');
+  if (stanEl) stanEl.value = 451001;
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
 boot();
 </script>
 </body>
