@@ -293,9 +293,127 @@
   .pill-timeout    { background:var(--gray-bg);   color:var(--gray);   border:1px solid var(--gray);   }
   .pill-velocity   { background:var(--blue-bg);   color:var(--blue);   border:1px solid var(--blue);   }
   .pill-restricted { background:var(--orange-bg); color:var(--orange); border:1px solid var(--orange); }
+
+  /* ── MODE TOGGLE ─────────────────────────────────────────────────────────── */
+  .mode-toggle {
+    display: flex; border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+  }
+  .mode-btn {
+    background: transparent; border: none; color: var(--muted);
+    padding: 5px 13px; font-family: inherit; font-size: 11px;
+    font-weight: 600; cursor: pointer; letter-spacing: .5px;
+    transition: all .15s;
+  }
+  .mode-btn:hover { color: var(--text); }
+  .mode-btn + .mode-btn { border-left: 1px solid var(--border); }
+  .mode-btn.mock-active    { background: #0a1e10; color: var(--green); }
+  .mode-btn.sandbox-active { background: var(--amber-bg); color: var(--amber); }
+
+  .live-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+    padding: 2px 6px; border-radius: 3px;
+    background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber);
+  }
+  .mock-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+    padding: 2px 6px; border-radius: 3px;
+    background: var(--green-bg); color: var(--green); border: 1px solid var(--green);
+  }
+
+  /* sandbox header tint */
+  body.sandbox-mode header {
+    border-bottom-color: var(--amber);
+    background: #1a1400;
+  }
+
+  /* ── CREDS MODAL ─────────────────────────────────────────────────────────── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.75); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: var(--surface); border: 1px solid var(--amber);
+    border-radius: 8px; padding: 24px 28px; width: 440px;
+    max-width: 95vw; display: flex; flex-direction: column; gap: 14px;
+  }
+  .modal-title {
+    font-size: 13px; font-weight: 700; color: var(--amber); letter-spacing: 1px;
+  }
+  .modal-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
+  .modal-field { display: flex; flex-direction: column; gap: 4px; }
+  .modal-field label { font-size: 11px; color: var(--muted); }
+  .modal-field input {
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 7px 9px; border-radius: 4px;
+    font-family: inherit; font-size: 12px; width: 100%;
+    outline: none; transition: border-color .15s;
+  }
+  .modal-field input:focus { border-color: var(--amber); }
+  .modal-field .hint { font-size: 10px; color: var(--muted); }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .btn-modal-cancel {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 7px 16px; border-radius: 4px;
+    cursor: pointer; font-family: inherit; font-size: 12px;
+  }
+  .btn-modal-save {
+    background: var(--amber); color: #000; border: none;
+    padding: 7px 20px; border-radius: 4px;
+    cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 700;
+  }
+  .btn-modal-save:hover { background: #d97706; }
+  .modal-status { font-size: 11px; color: var(--green); min-height: 14px; }
+
+  /* sandbox note in scenario panel */
+  .sandbox-note {
+    display: none; font-size: 10px; color: var(--amber);
+    background: var(--amber-bg); border: 1px solid var(--amber);
+    border-radius: 4px; padding: 5px 10px; margin-top: 8px;
+    letter-spacing: .3px;
+  }
+  body.sandbox-mode .sandbox-note { display: block; }
+
+  /* mode column in log */
+  .pill-mock { background: var(--green-bg); color: var(--green); border: 1px solid var(--green); }
+  .pill-live { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber); }
 </style>
 </head>
 <body>
+
+<!-- ── CREDENTIALS MODAL ──────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="credsModal">
+  <div class="modal-box">
+    <div class="modal-title">⚙ Visa Sandbox Credentials</div>
+    <div class="modal-desc">
+      Enter your Visa Developer credentials. mTLS cert/key are optional — omit for Basic Auth only.<br/>
+      Credentials are saved locally on the server (not transmitted elsewhere).
+    </div>
+    <div class="modal-field">
+      <label>User ID (Basic Auth username)</label>
+      <input id="credUserId" type="text" placeholder="e.g. your-project-userId"/>
+    </div>
+    <div class="modal-field">
+      <label>Password</label>
+      <input id="credPassword" type="password" placeholder="API password"/>
+    </div>
+    <div class="modal-field">
+      <label>mTLS Cert path <span style="color:var(--muted);">(optional)</span></label>
+      <input id="credCertPath" type="text" placeholder="e.g. C:/certs/client_cert.pem"/>
+      <div class="hint">Leave blank if using Basic Auth only</div>
+    </div>
+    <div class="modal-field">
+      <label>mTLS Key path <span style="color:var(--muted);">(optional)</span></label>
+      <input id="credKeyPath" type="text" placeholder="e.g. C:/certs/client_key.pem"/>
+    </div>
+    <div class="modal-status" id="credsStatus"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeCredsModal()">Cancel</button>
+      <button class="btn-modal-save" onclick="saveCredentials()">Save &amp; Enable Sandbox</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── HEADER ───────────────────────────────────────────────────────────────── -->
 <header>
@@ -307,7 +425,12 @@
     </div>
   </div>
   <div class="header-right">
-    <div class="server-status"><div class="status-dot"></div>MOCK ONLINE</div>
+    <div class="server-status"><div class="status-dot"></div><span id="serverStatusLabel">MOCK ONLINE</span></div>
+    <div class="mode-toggle">
+      <button class="mode-btn mock-active" id="btnMock" onclick="toggleMode('mock')">MOCK</button>
+      <button class="mode-btn" id="btnSandbox" onclick="toggleMode('sandbox')">SANDBOX</button>
+    </div>
+    <button class="btn-sm" id="credsBtn" onclick="openCredsModal()" style="display:none;">⚙ Credentials</button>
     <button class="btn-sm" onclick="resetSession()">↺ Reset Session</button>
   </div>
 </header>
@@ -329,6 +452,7 @@
 <div class="scenario-panel">
   <div class="scenario-label" id="scenarioLabel">Scenario Triggers — click to select</div>
   <div class="scenario-grid" id="scenarioGrid"></div>
+  <div class="sandbox-note">⚠ Sandbox mode active — Visa sandbox typically returns RC 00 for all transactions. Use Mock to test error scenarios.</div>
 </div>
 
 <!-- ── MAIN GRID ─────────────────────────────────────────────────────────────── -->
@@ -374,12 +498,12 @@
   <table>
     <thead>
       <tr>
-        <th>#</th><th>Type</th><th>Time</th><th>Amount</th>
+        <th>#</th><th>Type</th><th>Mode</th><th>Time</th><th>Amount</th>
         <th>Source / Recipient</th><th>STAN</th><th>RC</th><th>Result</th>
       </tr>
     </thead>
     <tbody id="logBody">
-      <tr><td colspan="8" style="padding:14px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>
+      <tr><td colspan="9" style="padding:14px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>
     </tbody>
   </table>
 </div>
@@ -392,6 +516,7 @@ let activeScenario = null;
 let lastRequest   = null;
 let lastResponse  = null;
 let jsonTab       = 'response';
+let currentMode   = 'mock';        // 'mock' | 'sandbox'
 
 const OCT_ORDER  = ['00','63','94','05','91','14','51','61'];
 const AFT_ORDER  = ['00','51','57','62','78','96','05','94'];
@@ -417,11 +542,121 @@ function short(desc) { return SHORT[desc] || desc; }
 async function boot() {
   try {
     scenarios = await (await fetch('/api/scenarios')).json();
+    await checkMode();
     renderScenarios();
     renderForm();
     await refreshLog();
   } catch(e) { console.error('Server unreachable', e); }
 }
+
+// ── MODE MANAGEMENT ───────────────────────────────────────────────────────────
+async function checkMode() {
+  try {
+    const data = await (await fetch('/api/mode')).json();
+    applyMode(data.mode, data.sandboxReady);
+  } catch(e) {}
+}
+
+function applyMode(mode, sandboxReady) {
+  currentMode = mode;
+  const isSandbox = mode === 'sandbox';
+
+  document.body.classList.toggle('sandbox-mode', isSandbox);
+
+  document.getElementById('btnMock').classList.toggle('mock-active', !isSandbox);
+  document.getElementById('btnMock').classList.toggle('sandbox-active', false);
+  document.getElementById('btnSandbox').classList.toggle('sandbox-active', isSandbox);
+  document.getElementById('btnSandbox').classList.toggle('mock-active', false);
+
+  const label = document.getElementById('serverStatusLabel');
+  label.textContent = isSandbox ? 'SANDBOX LIVE' : 'MOCK ONLINE';
+  label.parentElement.style.color = isSandbox ? 'var(--amber)' : 'var(--green)';
+  label.parentElement.querySelector('.status-dot').style.background = isSandbox ? 'var(--amber)' : 'var(--green)';
+
+  document.getElementById('credsBtn').style.display = 'inline-block';
+}
+
+async function toggleMode(mode) {
+  if (mode === currentMode) return;
+
+  if (mode === 'sandbox') {
+    // check if creds are configured
+    try {
+      const status = await (await fetch('/api/credentials/status')).json();
+      if (!status.configured) { openCredsModal(); return; }
+    } catch(e) {}
+  }
+
+  try {
+    const res  = await fetch('/api/mode', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode }),
+    });
+    const data = await res.json();
+    if (data.error) { alert(`Mode switch failed: ${data.error}`); return; }
+    applyMode(data.mode, data.sandboxReady);
+  } catch(e) { alert('Could not reach server'); }
+}
+
+// ── CREDENTIALS MODAL ─────────────────────────────────────────────────────────
+function openCredsModal() {
+  document.getElementById('credsStatus').textContent = '';
+  document.getElementById('credsModal').classList.add('open');
+  // pre-load existing status
+  fetch('/api/credentials/status').then(r => r.json()).then(s => {
+    if (s.userId) document.getElementById('credUserId').placeholder = s.userId + ' (saved)';
+  }).catch(() => {});
+}
+
+function closeCredsModal() {
+  document.getElementById('credsModal').classList.remove('open');
+}
+
+async function saveCredentials() {
+  const userId   = document.getElementById('credUserId').value.trim();
+  const password = document.getElementById('credPassword').value;
+  const certPath = document.getElementById('credCertPath').value.trim();
+  const keyPath  = document.getElementById('credKeyPath').value.trim();
+
+  if (!userId || !password) {
+    document.getElementById('credsStatus').textContent = '⚠ User ID and Password are required.';
+    document.getElementById('credsStatus').style.color = 'var(--red)';
+    return;
+  }
+
+  const statusEl = document.getElementById('credsStatus');
+  statusEl.textContent = 'Saving...';
+  statusEl.style.color = 'var(--muted)';
+
+  try {
+    const res = await fetch('/api/credentials', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId, password, certPath: certPath || null, keyPath: keyPath || null }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      statusEl.textContent = `Error: ${data.error}`;
+      statusEl.style.color = 'var(--red)';
+      return;
+    }
+    statusEl.textContent = '✓ Credentials saved. Switching to Sandbox...';
+    statusEl.style.color = 'var(--green)';
+    setTimeout(async () => {
+      closeCredsModal();
+      await toggleMode('sandbox');
+    }, 900);
+  } catch(e) {
+    statusEl.textContent = 'Network error — server unreachable';
+    statusEl.style.color = 'var(--red)';
+  }
+}
+
+// close modal on overlay click
+document.getElementById('credsModal').addEventListener('click', function(e) {
+  if (e.target === this) closeCredsModal();
+});
 
 // ── TX TYPE SWITCHING ─────────────────────────────────────────────────────────
 function switchTxType(type, btn) {
@@ -904,16 +1139,19 @@ function renderLog(rows) {
   document.getElementById('logCount').textContent = `${rows.length} transaction${rows.length !== 1 ? 's' : ''}`;
   const tbody = document.getElementById('logBody');
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="8" style="padding:14px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" style="padding:14px;color:var(--muted);font-style:italic;">No transactions yet</td></tr>';
     return;
   }
   window._logRows = rows;
   tbody.innerHTML = rows.map(r => {
     const typeClass = r.type === 'OCT' ? 'type-oct' : r.type === 'AFT' ? 'type-aft' : 'type-pair';
     const cat = r.category || 'unknown';
+    const modeLabel = r.mode === 'sandbox' ? 'LIVE' : 'MOCK';
+    const modeCls   = r.mode === 'sandbox' ? 'pill-live' : 'pill-mock';
     return `<tr onclick="loadLogEntry(${r.seq})">
       <td style="color:var(--muted);">${r.seq}</td>
       <td><span class="type-badge ${typeClass}">${r.type}</span></td>
+      <td><span class="rc-pill ${modeCls}" style="font-size:9px;">${modeLabel}</span></td>
       <td style="color:var(--muted);">${new Date(r.timestamp).toLocaleTimeString()}</td>
       <td>$${r.amount}</td>
       <td style="color:var(--muted);font-size:11px;">${r.recipient}</td>
